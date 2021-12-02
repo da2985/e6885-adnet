@@ -143,7 +143,7 @@ def calculate_IOU(box_1, box_2):
 def cropImage(img,bb):
   img=np.array(img)
   resized=cv2.resize(img[bb[1]:bb[1]+bb[3],bb[0]:bb[0]+bb[2]],(112,112))
-  return img,resized.astype(np.float64)
+  return img,resized.astype(np.float64),resized
 
 
 def get_gt_values(gt_path):
