@@ -146,7 +146,7 @@ def cropImage(img,bb):
   return img,resized.astype(np.float64),resized
 
 
-def get_gt_values(gt_path):
+def get_gt_values_VOT(gt_path):
   with open(gt_path, 'r') as f:
     lines = f.readlines()
     boxes = []
@@ -163,6 +163,17 @@ def get_gt_values(gt_path):
         if counter==4:
           boxes.append(l)
     return boxes
+
+def get_gt_values_OTB(gt_path):
+  with open(gt_path, 'r') as f:
+      lines = f.readlines()
+      boxes = []
+      for line in lines:
+          if not line.strip():
+              continue
+          x, y, w, h = [int(x) for x in line.split(',')]
+          boxes.append([x, y, w, h])
+      return boxes
 
 
 
