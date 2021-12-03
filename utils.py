@@ -3,62 +3,6 @@ import cv2
 import matplotlib.pyplot as plt
 
 
-def MoveLeft(bbox,image,check):
-  newbbox=np.copy(bbox)
-  boxW = newbbox[2]
-  if check==True:
-    step = int(0.3 * boxW * 2)
-  else:
-    step = int(0.3 * boxW)
-  if newbbox[0] - boxW - step >= 0:
-      newbbox[0] -= step
-  else:
-      newbbox[0] = 0
-  return newbbox
-
-
-def MoveRight(bbox,image,check):
-  newbbox=np.copy(bbox)
-  boxW = newbbox[2]
-  if check==True:
-    step = int(0.3 * boxW * 2)
-  else:
-     step = int(0.3 * boxW)
-  if newbbox[0] + boxW + step < image.shape[1]:
-      newbbox[0] += step
-  else:
-      newbbox[0] = image.shape[1] - boxW
-  return newbbox
-
-
-def MoveUp(bbox,image,check):
-  newbbox=np.copy(bbox)
-  boxH = newbbox[3]
-  if check==True:
-    step = int(0.3 * boxH * 2)
-  else:
-    step = int(0.3 * boxH)
-  if newbbox[1] - boxH - step >= 0:
-      newbbox[1] -= step
-  else:
-      newbbox[1] = 0
-  return newbbox
-
-
-def MoveDown(bbox,image,check):
-  newbbox=np.copy(bbox)
-  boxH = newbbox[3]
-  if check==True:
-    step = int(0.3 * boxH * 2)
-  else:
-    step = int(0.3 * boxH)
-  if newbbox[1] + step + boxH  <= image.shape[0]:
-      newbbox[1] += step
-  else:
-      newbbox[1] = image.shape[0] - boxH
-  return newbbox
-
-
 def scaleUp(bbox,image):
   newbbox=np.copy(bbox)
   boxW = newbbox[2]
@@ -139,12 +83,6 @@ def calculate_IOU(box_1, box_2):
 
     iou = intersection_area / float(box1_area + box2_area - intersection_area)
     return iou
-
-def cropImage(img,bb):
-  img=np.array(img)
-  resized=cv2.resize(img[bb[1]:bb[1]+bb[3],bb[0]:bb[0]+bb[2]],(112,112))
-  return img,resized.astype(np.float64),resized
-
 
 def get_gt_values_VOT(gt_path):
   with open(gt_path, 'r') as f:
