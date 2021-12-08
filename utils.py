@@ -13,13 +13,17 @@ def scaleUp(bbox,image):
 
   if newbbox[0]+stepW+boxW<=image.shape[1]:
     newbbox[2]+=stepW
+    newbbox[0] = newbbox[0] - stepW/2
   else:
     newbbox[2]=image.shape[1]-newbbox[0]-2
+    newbbox[0] = newbbox[0] - (newbbox[2] - boxW)/2
 
   if newbbox[1]+stepH+boxH<=image.shape[0]:
     newbbox[3]+=stepH
+    newbbox[1] = newbbox[1] - stepH/2
   else:
     newbbox[3]=image.shape[0]-newbbox[1]-2
+    newbbox[1] = newbbox[1] - (newbbox[3] - boxH)/2
   return newbbox
 
 
@@ -34,12 +38,16 @@ def scaleDown(bbox,image):
 
   if newbbox[0]-stepW+boxW>=0:
     newbbox[2]-=stepW
+    newbbox[0] = newbbox[0] + stepW/2
   else:
     newbbox[2]=0
+    newbbox[0] = newbbox[0] + (boxW)/2
   if newbbox[1]-stepH+boxH<=image.shape[0]:
     newbbox[3]-=stepH
+    newbbox[1] = newbbox[1] + stepH/2
   else:
     newbbox[3]=0
+    newbbox[1] = newbbox[1] + boxH/2
   return newbbox
 
 
