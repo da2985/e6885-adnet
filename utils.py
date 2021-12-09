@@ -11,19 +11,21 @@ def scaleUp(bbox,image):
   stepW = int(0.3 * boxW)
   stepH = int(0.3 * boxH)
 
-  if newbbox[0]+stepW+boxW<=image.shape[1]:
+  if newbbox[0] - stepW/2 >= 0 and newbbox[0] + boxW + stepW/2 <= image.shape[1]:
     newbbox[2]+=stepW
     newbbox[0] = newbbox[0] - stepW/2
   else:
-    newbbox[2]=image.shape[1]-newbbox[0]-2
-    newbbox[0] = newbbox[0] - (newbbox[2] - boxW)/2
+    largestchange = max(min(newbbox[0], image.shape[1]-boxW-newbbox[0]),0)
+    newbbox[2]= newbbox[2] + largestchange*2
+    newbbox[0] = newbbox[0] - largestchange
 
-  if newbbox[1]+stepH+boxH<=image.shape[0]:
+  if newbbox[1] - stepH/2 >= 0 and newbbox[1] + boxH + stepH/2 <= image.shape[0]:
     newbbox[3]+=stepH
     newbbox[1] = newbbox[1] - stepH/2
   else:
-    newbbox[3]=image.shape[0]-newbbox[1]-2
-    newbbox[1] = newbbox[1] - (newbbox[3] - boxH)/2
+    largestchange = max(min(newbbox[1], image.shape[0]-boxH-newbbox[1]),0)
+    newbbox[3]= newbbox[3] + largestchange*2
+    newbbox[1] = newbbox[1] - largestchange
   return newbbox
 
 
@@ -36,19 +38,12 @@ def scaleDown(bbox,image):
   stepW = int(0.3 * boxW)
   stepH = int(0.3 * boxH)
 
-  if newbbox[0]-stepW+boxW>=0:
-    newbbox[2]-=stepW
-    newbbox[0] = newbbox[0] + stepW/2
-  else:
-    newbbox[2]=0
-    newbbox[0] = newbbox[0] + (boxW)/2
-  if newbbox[1]-stepH+boxH<=image.shape[0]:
-    newbbox[3]-=stepH
-    newbbox[1] = newbbox[1] + stepH/2
-  else:
-    newbbox[3]=0
-    newbbox[1] = newbbox[1] + boxH/2
+  newbbox[2]-=stepW
+  newbbox[0] = newbbox[0] + stepW/2
+  newbbox[3]-=stepH
+  newbbox[1] = newbbox[1] + stepH/2
   return newbbox
+
 
 
 def box_center_to_corner(bb):
